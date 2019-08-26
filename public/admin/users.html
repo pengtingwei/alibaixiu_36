@@ -46,41 +46,44 @@
               <div class="form-group">
                 <label class="form-image">
                   <input id="avatar" type="file">
-                  <img src="../assets/img/default.png">
+                  <img src="../assets/img/default.png" id="prev">
                   <i class="mask fa fa-upload"></i>
                 </label>
+                <!-- 隐藏域 -->
+                <input type="hidden" name="avatar" id="img">
               </div>
             </div>
             <div class="form-group">
               <label>邮箱</label>
-              <input class="form-control" type="email" placeholder="请输入邮箱">
+              <input class="form-control" type="email" placeholder="请输入邮箱" name="email">
             </div>
             <div class="form-group">
               <label>昵称</label>
-              <input class="form-control" type="text" placeholder="请输入昵称">
+              <input class="form-control" type="text" placeholder="请输入昵称" name="nickName">
             </div>
             <div class="form-group">
               <label>密码</label>
-              <input class="form-control" type="text" placeholder="请输入密码">
+              <input class="form-control" type="text" placeholder="请输入密码" name="password">
             </div>
             <div class="form-group">
               <div class="radio-inline">
-                <label><input type="radio">未激活</label>
+                <label><input type="radio" name="status" value="0">未激活</label>
               </div>
               <div class="radio-inline">
-                <label><input type="radio">激活</label>
+                <label><input type="radio" name="status" value="1" checked>激活</label>
               </div>
             </div>
             <div class="form-group">
               <div class="radio-inline">
-                <label><input type="radio">超级管理员</label>
+                <label><input type="radio" name="role" value="admin" checked>超级管理员</label>
               </div>
               <div class="radio-inline">
-                <label><input type="radio">普通用户</label>
+                <label><input type="radio" name="role" value="normal">普通用户</label>
               </div>
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <!-- 将下面的type=submit修改为button -->
+              <button class="btn btn-primary" type="button" id="addUser">添加</button>
             </div>
           </form>
         </div>
@@ -194,7 +197,7 @@
         <td>{{$value.email}}</td>
         <td>{{$value.nickName}}</td>
         <td>{{$value.status == 1 ? '激活' : '未激活'}}</td>
-        <td>{{$value.role == 'admin' ? '管理员' : '普通用户'}}</td>
+        <td>{{$value.role == 'admin' ? '超级管理员' : '普通用户'}}</td>
         <td class="text-center">
           <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
           <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
@@ -226,7 +229,7 @@
   <script>
     // 定义一个数组 
     var userArr = [];
-    // 发送ajax 
+    // 发送ajax  显示所有用户功能 
     $.ajax({
       type: 'get',
       url: '/users',
@@ -239,11 +242,47 @@
 
 
     // 定义render方法 用于渲染模块 
-    function render(arr){
-      var str = template('userTpl',{list:arr});
+    function render(arr) {
+      var str = template('userTpl', { list: arr });
       $('tbody').html(str);
     }
 
+    // 用户添加功能 
+    $('#addUser').on('click', function () {
+      // 收集表单数据 
+      let formData = $('form').serialize();
+      // 调用ajax
+      $.ajax({
+        type: 'post',
+        url: '/users',
+        data: formData,
+        success: function (res) {
+          // 把res给push到userArr这个数组中 
+          userArr.push(res);
+          // 调用render()
+          render(userArr);
+        }
+      });
+    });
+
+    // 完成图片上传功能 
+    $('#avatar').on('change', function () {
+      // 创建FormData对象
+      var formData = new FormData();
+      formData.append('avatar', this.files[0]);
+      // 发送ajax
+      $.ajax({
+        type: 'post',
+        url: '/upload',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+          $('#img').val(res[0].avatar);
+          $('#prev').attr('src', res[0].avatar);
+        }
+      })
+    });
 
   </script>
 
