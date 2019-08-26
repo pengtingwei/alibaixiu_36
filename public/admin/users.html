@@ -7,6 +7,7 @@
 </script>
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8">
   <title>Users &laquo; Admin</title>
@@ -16,6 +17,7 @@
   <link rel="stylesheet" href="../assets/css/admin.css">
   <script src="../assets/vendors/nprogress/nprogress.js"></script>
 </head>
+
 <body>
   <script>NProgress.start()</script>
 
@@ -24,7 +26,7 @@
       <button class="btn btn-default navbar-btn fa fa-bars"></button>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="profile.html"><i class="fa fa-user"></i>个人中心</a></li>
-        <li><a href="javascript:;" id="logout" ><i class="fa fa-sign-out"></i>退出</a></li>
+        <li><a href="javascript:;" id="logout"><i class="fa fa-sign-out"></i>退出</a></li>
       </ul>
     </nav>
     <div class="container-fluid">
@@ -89,7 +91,7 @@
           </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
-               <tr>
+              <tr>
                 <th class="text-center" width="40"><input type="checkbox"></th>
                 <th class="text-center" width="80">头像</th>
                 <th>邮箱</th>
@@ -100,7 +102,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <!-- <tr>
                 <td class="text-center"><input type="checkbox"></td>
                 <td class="text-center"><img class="avatar" src="../assets/img/default.png"></td>
                 <td>coder@itcast.cn</td>
@@ -135,7 +137,7 @@
                   <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
                   <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>
@@ -182,26 +184,70 @@
 
   <script src="../assets/vendors/jquery/jquery.js"></script>
   <script src="../assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script src="../assets/vendors/art-template/template-web.js"></script>
+  <!-- 用于显示用户列表的模板 -->
+  <script type="text/html" id="userTpl">
+    {{each list}}
+    <tr>
+        <td class="text-center"><input type="checkbox"></td>
+        <td class="text-center"><img class="avatar" src="{{$value.avatar}}"></td>
+        <td>{{$value.email}}</td>
+        <td>{{$value.nickName}}</td>
+        <td>{{$value.status == 1 ? '激活' : '未激活'}}</td>
+        <td>{{$value.role == 'admin' ? '管理员' : '普通用户'}}</td>
+        <td class="text-center">
+          <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
+          <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+        </td>
+      </tr>
+      {{/each}}
+  </script>
   <script>
-    
-      $('#logout').on('click',function(){
-        var isConfirm = confirm('您真的要退出吗?');
-        if (isConfirm) {
-          // alert('用户点击了确认按钮')
-          $.ajax({
-            type: 'post',
-            url: '/logout',
-            success: function () {
-              location.href = 'login.html';
-            },
-            error: function () {
-              alert('退出失败')
-            }
-          })
-        }
-      });
-    
-    </script>
+
+    $('#logout').on('click', function () {
+      var isConfirm = confirm('您真的要退出吗?');
+      if (isConfirm) {
+        // alert('用户点击了确认按钮')
+        $.ajax({
+          type: 'post',
+          url: '/logout',
+          success: function () {
+            location.href = 'login.html';
+          },
+          error: function () {
+            alert('退出失败')
+          }
+        })
+      }
+    });
+
+  </script>
+
+  <script>
+    // 定义一个数组 
+    var userArr = [];
+    // 发送ajax 
+    $.ajax({
+      type: 'get',
+      url: '/users',
+      success: function (res) {
+        // 将res赋值给userArr
+        userArr = res;
+        render(userArr);
+      }
+    });
+
+
+    // 定义render方法 用于渲染模块 
+    function render(arr){
+      var str = template('userTpl',{list:arr});
+      $('tbody').html(str);
+    }
+
+
+  </script>
+
   <script>NProgress.done()</script>
 </body>
+
 </html>
