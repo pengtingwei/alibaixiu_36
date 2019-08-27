@@ -201,7 +201,7 @@
         <td>{{$value.role == 'admin' ? '超级管理员' : '普通用户'}}</td>
         <td class="text-center" data-id="{{$value._id}}">
           <a href="javascript:;" class="btn btn-default btn-xs edit">编辑</a>
-          <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+          <a href="javascript:;" class="btn btn-danger btn-xs delete">删除</a>
         </td>
       </tr>
       {{/each}}
@@ -344,7 +344,7 @@
 
           // 重新渲染数据 
           render(userArr);
-          
+
           $('#addUser').show();
           $('#editUser').hide();
           $('form > h2').text('添加新用户');
@@ -360,6 +360,26 @@
         }
       })
 
+    });
+
+    // 删除单个用户
+
+    $('tbody').on('click', '.delete', function () {
+      if (confirm("你真的要删除吗?")) {
+        var id = $(this).parent().attr('data-id');
+
+        // 发送ajax请求
+        $.ajax({
+          url: '/users/' + id,
+          type: 'delete',
+          success: function (res) {
+            // 返回是一个对象  然后根据这个对象去userArr数组中将对应的索引找到 然后调用 splice()方法 将数组元素删除  要调用render方法 重新渲染  
+            var index = userArr.findIndex(item => item._id == res._id);
+            userArr.splice(index, 1);
+            render(userArr);
+          }
+        });
+      }
     });
 
   </script>
