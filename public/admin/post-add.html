@@ -7,6 +7,7 @@
 </script>
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8">
   <title>Add new post &laquo; Admin</title>
@@ -16,6 +17,7 @@
   <link rel="stylesheet" href="../assets/css/admin.css">
   <script src="../assets/vendors/nprogress/nprogress.js"></script>
 </head>
+
 <body>
   <script>NProgress.start()</script>
 
@@ -24,7 +26,7 @@
       <button class="btn btn-default navbar-btn fa fa-bars"></button>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="profile.html"><i class="fa fa-user"></i>个人中心</a></li>
-        <li><a href="javascript:;" id="logout" ><i class="fa fa-sign-out"></i>退出</a></li>
+        <li><a href="javascript:;" id="logout"><i class="fa fa-sign-out"></i>退出</a></li>
       </ul>
     </nav>
     <div class="container-fluid">
@@ -42,37 +44,39 @@
             <input id="title" class="form-control input-lg" name="title" type="text" placeholder="文章标题">
           </div>
           <div class="form-group">
-            <label for="content">标题</label>
-            <textarea id="content" class="form-control input-lg" name="content" cols="30" rows="10" placeholder="内容"></textarea>
+            <label for="content">内容</label>
+            <textarea id="content" class="form-control input-lg" name="content" cols="30" rows="10"
+              placeholder="内容"></textarea>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label for="feature">特色图像</label>
             <!-- show when image chose -->
-            <img class="help-block thumbnail" style="display: none">
+            <img class="help-block thumbnail" style="display: none" id="prev">
             <input id="feature" class="form-control" name="feature" type="file">
+            <input id="img" name="thumbnail" type="hidden">
           </div>
           <div class="form-group">
             <label for="category">所属分类</label>
             <select id="category" class="form-control" name="category">
-              <option value="1">未分类</option>
-              <option value="2">潮生活</option>
+              <option value="">未分类</option>
+              <!-- <option value="2">潮生活</option> -->
             </select>
           </div>
           <div class="form-group">
             <label for="created">发布时间</label>
-            <input id="created" class="form-control" name="created" type="datetime-local">
+            <input id="created" class="form-control" name="createAt" type="datetime-local">
           </div>
           <div class="form-group">
             <label for="status">状态</label>
-            <select id="status" class="form-control" name="status">
-              <option value="drafted">草稿</option>
-              <option value="published">已发布</option>
+            <select id="status" class="form-control" name="state">
+              <option value="0">草稿</option>
+              <option value="1">已发布</option>
             </select>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" type="submit">保存</button>
+            <button class="btn btn-primary" type="button" id="pAdd">保存</button>
           </div>
         </div>
       </form>
@@ -118,26 +122,85 @@
 
   <script src="../assets/vendors/jquery/jquery.js"></script>
   <script src="../assets/vendors/bootstrap/js/bootstrap.js"></script>
+  <script src="../assets/vendors/art-template/template-web.js"></script>
+
+  <!-- 构建模板 -->
+
+  <script type="text/html" id="cTpl">
+    {{each list}}
+    <option value="{{$value._id}}">{{$value.title}}</option>
+    {{/each}}
+  </script>
+
+
   <script>
-    
-      $('#logout').on('click',function(){
-        var isConfirm = confirm('您真的要退出吗?');
-        if (isConfirm) {
-          // alert('用户点击了确认按钮')
-          $.ajax({
-            type: 'post',
-            url: '/logout',
-            success: function () {
-              location.href = 'login.html';
-            },
-            error: function () {
-              alert('退出失败')
-            }
-          })
+
+    $('#logout').on('click', function () {
+      var isConfirm = confirm('您真的要退出吗?');
+      if (isConfirm) {
+        // alert('用户点击了确认按钮')
+        $.ajax({
+          type: 'post',
+          url: '/logout',
+          success: function () {
+            location.href = 'login.html';
+          },
+          error: function () {
+            alert('退出失败')
+          }
+        })
+      }
+    });
+
+
+    // 完成图片上传功能 
+    $('#feature').on('change', function () {
+      // 创建FormData对象
+      var formData = new FormData();
+      formData.append('avatar', this.files[0]);
+      // 发送ajax
+      $.ajax({
+        type: 'post',
+        url: '/upload',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+          $('#img').val(res[0].avatar);
+          $('#prev').show().attr('src', res[0].avatar);
+        }
+      })
+    });
+
+
+    // 获取所有的分类  
+    $.ajax({
+      type: 'get',
+      url: '/categories',
+      success: function (res) {
+        var str = template('cTpl', { list: res });
+        // console.log(str);
+        $('#category').append(str);
+      }
+    });
+
+    // 添加文章功能 
+    $('#pAdd').on('click', function () {
+      var formData = $('form').serialize();
+
+      $.ajax({
+        type:'post',
+        url:'/posts',
+        data:formData,
+        success:function(res){
+          location.href = 'posts.html';
         }
       });
-    
-    </script>
+
+    });
+
+  </script>
   <script>NProgress.done()</script>
 </body>
+
 </html>
