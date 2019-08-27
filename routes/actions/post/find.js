@@ -13,15 +13,15 @@ module.exports = async (req, res) => {
 	// 查询条件
 	let condition = {};
 	// 分类条件
-	if (req.fields.category != undefined) {
-		condition.category = req.fields.category;
+	if (req.query.category != "all") {
+		condition.category = req.query.category;
 	}
 	// 状态条件
-	if (req.fields.state != undefined) {
-		condition.state = req.fields.state;
+	if (req.query.state != "all") {
+		condition.state = req.query.state;
 	}
 	// 查询用户信息
-	const posts = await pagination(Post).page(page).size(10).display(5).find(condition).populate('author', '-password').populate('category').select('-content -meta').exec();
+	const posts = await pagination(Post).page(page).size(2).display(5).find(condition).populate('author', '-password').populate('category').select('-content -meta').exec();
 	// 响应
 	res.send(posts);
 }
