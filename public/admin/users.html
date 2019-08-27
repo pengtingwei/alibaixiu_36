@@ -193,7 +193,7 @@
   <script type="text/html" id="userTpl">
     {{each list}}
     <tr>
-        <td class="text-center"><input type="checkbox"></td>
+        <td class="text-center"><input type="checkbox" data-id="{{$value._id}}"></td>
         <td class="text-center"><img class="avatar" src="{{$value.avatar}}"></td>
         <td>{{$value.email}}</td>
         <td>{{$value.nickName}}</td>
@@ -414,6 +414,39 @@
         $('#allDel').hide();
       }
     });
+
+
+    // 给批量删除按钮注册点击事件 
+    $('#allDel').on('click', function () {
+      // 将所有选中的input的这一行删除把 
+      var checkUser = $('tbody input:checked');
+      var ids = [];
+      // 编辑checkUser jQuery对象
+      checkUser.each(function (index, item) {
+        ids.push($(item).attr('data-id'))
+      })
+
+      // 完成 删除多个的功能 
+
+      $.ajax({
+          url: '/users/' + ids.join('-'),
+          type: 'delete',
+          success: function (res) {
+            // 返回是一个对象  然后根据这个对象去userArr数组中将对应的索引找到 然后调用 splice()方法 将数组元素删除  要调用render方法 重新渲染  
+            res.forEach(value=>{
+              
+              var index = userArr.findIndex(item => item._id == value._id);
+              userArr.splice(index, 1);
+              render(userArr);
+            });
+           
+          }
+        });
+
+
+    });
+
+
 
   </script>
 

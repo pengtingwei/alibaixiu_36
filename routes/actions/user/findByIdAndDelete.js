@@ -36,10 +36,13 @@ module.exports = async (req, res) => {
 			let user = await User.findByIdAndDelete(item);
 			// 将删除的用户存储在数组中
 			result.push(user);
+			
 			// 如果缩略图存在
 			if (user.avatar) {
+				// console.log(path.join(__dirname, '../', '../', '../','public', user.avatar));
+				// return;
 				// 删除缩略图
-				await unlink(path.join(__dirname, '../', '../', 'public', 'uploads', user.avatar));
+				await unlink(path.join(__dirname, '../', '../', '../','public', user.avatar));
 			}
 		}
 		// 响应
