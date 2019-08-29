@@ -117,7 +117,7 @@
       type: 'get',
       url: '/posts/count',
       success: function (response) {
-        
+
         $('#post').html('<strong>' + response.postCount + '</strong>篇文章（<strong>' + response.draftCount + '</strong>篇草稿）')
       }
     });
@@ -140,6 +140,17 @@
       }
     })
 
+
+    // 展示用户的相关信息
+    $.ajax({
+      type: 'get',
+      url: '/users/' + userId,
+      success: function (response) {
+        // console.log(response);
+        $('.avatar').attr('src', response.avatar)
+        $('.profile .name').html(response.nickName)
+      }
+    })
 
   </script>
   <script>NProgress.done()</script>

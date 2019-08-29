@@ -1,6 +1,6 @@
 <script src="/login/status"></script>
 <script>
-  // console.log(isLogin);
+  console.log(isLogin,userId);
   if (!isLogin) {
     location.href = "login.html";
   }
@@ -185,7 +185,9 @@
         contentType: false,
         success: function (response) {
           // console.log(response[0].image)
+          // 添加到隐藏域里面 
           $('#file').val(response[0].image)
+          // 将其预览出来 
           $('#prev').show().attr("src", response[0].image);
         }
       })
@@ -204,6 +206,7 @@
         url: '/slides',
         data: formData,
         success: function (res) {
+          // 将返回回来的res追加到sArr数组中 
           sArr.push(res);
           render();
         }

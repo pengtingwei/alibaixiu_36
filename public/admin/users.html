@@ -429,24 +429,33 @@
       // 完成 删除多个的功能 
 
       $.ajax({
-          url: '/users/' + ids.join('-'),
-          type: 'delete',
-          success: function (res) {
-            // 返回是一个对象  然后根据这个对象去userArr数组中将对应的索引找到 然后调用 splice()方法 将数组元素删除  要调用render方法 重新渲染  
-            res.forEach(value=>{
-              
-              var index = userArr.findIndex(item => item._id == value._id);
-              userArr.splice(index, 1);
-              render(userArr);
-            });
-           
-          }
-        });
+        url: '/users/' + ids.join('-'),
+        type: 'delete',
+        success: function (res) {
+          // 返回是一个对象  然后根据这个对象去userArr数组中将对应的索引找到 然后调用 splice()方法 将数组元素删除  要调用render方法 重新渲染  
+          res.forEach(value => {
+
+            var index = userArr.findIndex(item => item._id == value._id);
+            userArr.splice(index, 1);
+            render(userArr);
+          });
+
+        }
+      });
 
 
     });
 
-
+    // 展示用户的相关信息
+    $.ajax({
+      type: 'get',
+      url: '/users/' + userId,
+      success: function (response) {
+        // console.log(response);
+        $('.avatar').attr('src', response.avatar)
+        $('.profile .name').html(response.nickName)
+      }
+    })
 
   </script>
 
