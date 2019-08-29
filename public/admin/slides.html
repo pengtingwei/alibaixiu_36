@@ -46,17 +46,18 @@
               <!-- show when image chose -->
               <img class="help-block thumbnail" style="display: none" id="prev">
               <input id="image" class="form-control" name="image" type="file" id="image">
+              <input type="hidden" name="image" id="file">
             </div>
             <div class="form-group">
               <label for="text">文本</label>
-              <input id="text" class="form-control" name="text" type="text" placeholder="文本">
+              <input id="text" class="form-control" name="title" type="text" placeholder="文本">
             </div>
             <div class="form-group">
               <label for="link">链接</label>
               <input id="link" class="form-control" name="link" type="text" placeholder="链接">
             </div>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">添加</button>
+              <button class="btn btn-primary" type="button" id="sAdd">添加</button>
             </div>
           </form>
         </div>
@@ -193,10 +194,11 @@
     var sArr = [];
 
     // 当轮播图表单发生提交行为时
-    $('#slidesForm').on('submit', function () {
+    $('#sAdd').on('click', function () {
       // 获取管理员在表单中输入的内容
-      var formData = $(this).serialize();
+      var formData = $("#slidesForm").serialize();
       // 向服务器端发送请求 添加轮播图数据
+    
       $.ajax({
         type: 'post',
         url: '/slides',
@@ -206,8 +208,7 @@
           render();
         }
       })
-      // 阻止表单默认提交行为
-      return false;
+      
     })
 
     function render() {
