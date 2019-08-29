@@ -152,7 +152,7 @@
         <td class="text-center">{{$value.createAt && $value.createAt.substr(0,10)}}</td>
         <td class="text-center">{{$value.state == 1 ? '已发布' : '草稿'}}</td>
         <td class="text-center">
-          <a href="javascript:;" class="btn btn-default btn-xs ">编辑</a>
+          <a href="post-add.html?id={{$value._id}}" class="btn btn-default btn-xs ">编辑</a>
           <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
         </td>
       </tr>
@@ -258,6 +258,9 @@
     });
 
 
+
+
+    
 
   </script>
   <script>NProgress.done()</script>
