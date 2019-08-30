@@ -1,5 +1,28 @@
+<script>
+  function getUrlParams(name) {
+    var paramsAry = location.search.substr(1).split('&');
+    // 循环数据
+    for (var i = 0; i < paramsAry.length; i++) {
+      var tmp = paramsAry[i].split('=');
+      if (tmp[0] == name) {
+        return tmp[1];
+      }
+    }
+    return -1;
+  }
+
+  // 如果是从浏览器上面直接输入的是list.html页面过来的 这个cid变量的值就是-1 如果是从index.html页面跳转过来的 它的值就不是-1 
+
+  var cid = getUrlParams('categoryId');
+
+  if (cid == -1) {
+    location.href = 'index.html';
+  }
+
+</script>
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +30,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/vendors/font-awesome/css/font-awesome.css">
 </head>
+
 <body>
   <div class="wrapper">
     <div class="topnav">
@@ -178,14 +202,16 @@
     </div>
     <div class="content">
       <div class="panel new">
-        <h3>会生活</h3>
-        <div class="entry">
+        <!-- <h3>会生活</h3> -->
+        <!-- <div class="entry">
           <div class="head">
             <a href="detail.html">星球大战：原力觉醒视频演示 电影票68</a>
           </div>
           <div class="main">
             <p class="info">admin 发表于 2020-02-01</p>
-            <p class="brief">星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯</p>
+            <p class="brief">
+              星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯
+            </p>
             <p class="extra">
               <span class="reading">阅读(3406)</span>
               <span class="comment">评论(0)</span>
@@ -208,7 +234,9 @@
           </div>
           <div class="main">
             <p class="info">admin 发表于 2020-02-01</p>
-            <p class="brief">星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯</p>
+            <p class="brief">
+              星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯
+            </p>
             <p class="extra">
               <span class="reading">阅读(3406)</span>
               <span class="comment">评论(0)</span>
@@ -231,7 +259,9 @@
           </div>
           <div class="main">
             <p class="info">admin 发表于 2020-02-01</p>
-            <p class="brief">星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯</p>
+            <p class="brief">
+              星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯，星球大战:原力觉醒：《星球大战:原力觉醒》中国首映盛典红毯
+            </p>
             <p class="extra">
               <span class="reading">阅读(3406)</span>
               <span class="comment">评论(0)</span>
@@ -247,7 +277,7 @@
               <img src="uploads/hots_2.jpg" alt="">
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="footer">
@@ -257,5 +287,54 @@
   <script src="assets/vendors/jquery/jquery.min.js"></script>
   <script src="assets/vendors/art-template/template-web.js"></script>
   <script src="assets/js/public.js"></script>
+  <script type="text/html" id="newTpl">
+    <h3>{{data[0].category.title}}</h3>
+    {{each data}}
+    <div class="entry">
+      <div class="head">
+       
+        <a href="detail.html?id={{$value._id}}">{{$value.title}}</a>
+      </div>
+      <div class="main">
+        <p class="info">{{$value.author.nickName}} 发表于 {{$value.createAt && $value.createAt.substr(0,10)}}</p>
+        <p class="brief">
+         {{$value.content}}
+        </p>
+        <p class="extra">
+          <span class="reading">阅读({{$value.meta.views}})</span>
+          <span class="comment">评论({{$value.meta.comments}})</span>
+          <a href="javascript:;" class="like">
+            <i class="fa fa-thumbs-up"></i>
+            <span>赞({{$value.meta.likes}})</span>
+          </a>
+          <a href="javascript:;" class="tags">
+            分类：<span>{{$value.category.title}}</span>
+          </a>
+        </p>
+        <a href="detail.html?id={{$value._id}}" class="thumb">
+          <img src="{{$value.thumbnail}}" alt="">
+        </a>
+      </div>
+    </div>
+    {{/each}}
+  </script>
+  <script>
+
+    // 发送ajax给服务器将让服务器响应指定分类下面的所有文章 
+
+    $.ajax({
+      type: 'get',
+      url: '/posts/category/' + cid,
+      success: function (res) {
+        // console.log(res);
+        var str = template('newTpl', { data: res });
+        // console.log(res)
+        $('.new').html(str)
+      }
+    });
+
+
+  </script>
 </body>
+
 </html>
