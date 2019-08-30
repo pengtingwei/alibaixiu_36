@@ -1,3 +1,25 @@
+<script>
+  function getUrlParams(name) {
+    var paramsAry = location.search.substr(1).split('&');
+    // 循环数据
+    for (var i = 0; i < paramsAry.length; i++) {
+      var tmp = paramsAry[i].split('=');
+      if (tmp[0] == name) {
+        return tmp[1];
+      }
+    }
+    return -1;
+  }
+
+  // 如果是从浏览器上面直接输入的是list.html页面过来的 这个cid变量的值就是-1 如果是从index.html页面跳转过来的 它的值就不是-1 
+
+  var id = getUrlParams('id');
+
+  if (id == -1) {
+    location.href = 'index.html';
+  }
+
+</script>
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -179,8 +201,8 @@
       </div>
     </div>
     <div class="content">
-      <div class="article">
-        <div class="breadcrumb">
+      <div class="article" id="article">
+        <!-- <div class="breadcrumb">
           <dl>
             <dt>当前位置：</dt>
             <dd><a href="javascript:;">奇趣事</a></dd>
@@ -195,7 +217,7 @@
           <span>分类: <a href="javascript:;">奇趣事</a></span>
           <span>阅读: (2421)</span>
           <span>评论: (143)</span>
-        </div>
+        </div> -->
       </div>
       <div class="panel hots">
         <h3>热门推荐</h3>
@@ -235,6 +257,43 @@
   <script src="assets/vendors/art-template/template-web.js"></script>
   <script src="assets/js/recommend.js"></script>
   <script src="assets/js/public.js"></script>
+  <!-- 文章详情模板 -->
+  <script type="text/html" id="postTpl">
+    <div class="breadcrumb">
+      <dl>
+        <dt>当前位置：</dt>
+        <dd><a href="javascript:;">{{category.title}}</a></dd>
+        <dd>{{title}}</dd>
+      </dl>
+    </div>
+    <h2 class="title">
+      <a href="javascript:;">{{title}}</a>
+    </h2>
+    <div class="meta">
+      <span>{{author.nickName}} 发布于 {{createAt}}</span>
+      <span>分类: <a href="javascript:;">{{category.title}}</a></span>
+      <span>阅读: ({{meta.views}})</span>
+      <span>评论: ({{meta.comments}})</span>
+      <a href="javascript:;" id="like">赞</a>
+    </div>
+    {{content}}
+  </script>
+  <script>
+
+    // 发送ajax
+    // 向服务器端发送请求 根据文章id获取文章详细信息
+    $.ajax({
+      type: 'get',
+      url: '/posts/' + id,
+      success: function (response) {
+        console.log(response)
+        var html = template('postTpl', response);
+        $('#article').html(html)
+      }
+    })
+
+
+  </script>
 </body>
 
 </html>
