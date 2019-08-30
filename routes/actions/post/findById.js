@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
 	if (error) return res.status(400).send({message: error.message});
 	// 通过验证
 	// 查询文章信息 关联集合查询  
-	const post = await Post.findById(id).populate('category');
+	const post = await Post.findById(id).populate('author category');
 	// 响应
 	return res.send(post);
 	
